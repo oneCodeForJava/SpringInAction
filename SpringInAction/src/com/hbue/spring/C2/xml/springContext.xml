@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<!-- <bean id="compactDisc" class="com.hbue.spring.C2.xml.SgtPeppers" />
+    -->
+    
+	<!-- <bean id="blankDisc" class="com.hbue.spring.C2.xml.BlankDisc">
+	    	<constructor-arg value="Sgt. Pepper's Lonely Hearts Club Band"></constructor-arg>
+	    	<constructor-arg value="The Beatles"></constructor-arg>
+	    	<constructor-arg>
+	    		<list>
+	    			<value>Sgt. Pepper's Lonely Hearts Club Band</value>
+	    			<value>With a Little Help from My Friends</value>
+	    			<value>Lucy in the Sky with Diamonds</value>
+	    			<value>Getting Better</value>
+	    			<value>Fixing a Hole</value>
+	    		</list>
+	    	</constructor-arg>
+    	</bean> -->
+    <!-- c命名空间 默认一个参数c:_ 指定参数 c:_0 
+	<bean id="blankDisc" class="com.hbue.spring.C2.xml.BlankDisc" 
+		c:title="Sgt. Pepper's Lonely Hearts Club Band"
+		c:artist="The Beatles" 
+		c:tracks-ref="trackList"/>-->
+  <!-- <bean id="cdPlayer" class="com.hbue.spring.C2.xml.CDPlayer">
+    	<constructor-arg ref="compactDisc" />
+    </bean>
+ 
+  	<bean id="cdPlayer" class="com.hbue.spring.C2.xml.CDPlayer">
+		<property name="cd" ref="blankDisc"></property>
+    </bean> --> 
+    <!-- 
+    <bean id="blankDisc" class="com.hbue.spring.C2.xml.BlankDisc">
+	    	<property name="title" value="Sgt. Pepper's Lonely Hearts Club Band"/>
+	    	<property name="artist" value="The Beatles"/>
+	    	<property name="tracks">
+	    		<list>
+	    			<value>Sgt. Pepper's Lonely Hearts Club Band</value>
+	    			<value>With a Little Help from My Friends</value>
+	    			<value>Lucy in the Sky with Diamonds</value>
+	    			<value>Getting Better</value>
+	    			<value>Fixing a Hole</value>
+	    		</list>
+	    	</property>
+    </bean> -->
+    <bean id="blankDisc" class="com.hbue.spring.C2.xml.BlankDisc" 
+		p:title="Sgt. Pepper's Lonely Hearts Club Band"
+		p:artist="The Beatles" 
+		p:tracks-ref="trackList"/>
+  	<!-- c命名空间 默认一个参数c:_-ref 指定参数 c:_0-ref 
+	<bean id="cdPlayer" class="com.hbue.spring.C2.xml.CDPlayer" c:_-ref="blankDisc"/>-->
+	<!-- c命名空间 默认一个参数p:_-ref 指定参数 p:_0-ref -->
+	<bean id="cdPlayer" class="com.hbue.spring.C2.xml.CDPlayer" p:cd-ref="blankDisc"/>
+	<util:list id="trackList">
+		<value>Sgt. Pepper's Lonely Hearts Club Band</value>
+		<value>With a Little Help from My Friends</value>
+		<value>Lucy in the Sky with Diamonds</value> 
+		<value>Getting Better</value>
+		<value>Fixing a Hole</value>
+	</util:list>
+</beans>

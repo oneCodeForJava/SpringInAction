@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util 
+        http://www.springframework.org/schema/util/spring-util.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<bean id="performance" class="com.hbue.spring.C4.xmlAspect.PerformanceImpl"/>
+	<bean id="audience" class="com.hbue.spring.C4.xmlAspect.Audience"/>
+	<bean id="trackCounter" class="com.hbue.spring.C4.xmlAspect.TrackCounter"/>
+	<bean id="cd" class="com.hbue.spring.C4.xmlAspect.BlankDisc">
+		<property name="title" value="Sgt. Pepper's Lonely Hearts Club Band"></property>
+	    <property name="artist" value="The Beatles"></property>
+    	<property name="tracks">
+    		<list>
+    			<value>Sgt. Pepper's Lonely Hearts Club Band</value>
+    			<value>With a Little Help from My Friends</value>
+    			<value>Lucy in the Sky with Diamonds</value>
+    			<value>Getting Better</value>
+    			<value>Fixing a Hole</value>
+    		</list>
+    	</property>
+	</bean>
+	<bean id="defaultEncoreable" class="com.hbue.spring.C4.xmlAspect.DefaultEncoreable"/>
+	<aop:aspectj-autoproxy />
+	<aop:config>
+<!-- 		<aop:aspect ref="audience">
+			<aop:before 
+				pointcut="execution(* com.hbue.spring.C4.xmlAspect.Performance.perform(..))" 
+				method="silenceCellPhones"/>
+			<aop:before 
+				pointcut="execution(* com.hbue.spring.C4.xmlAspect.Performance.perform(..))" 
+				method="takeSeats"/>
+			<aop:after-returning
+				pointcut="execution(* com.hbue.spring.C4.xmlAspect.Performance.perform(..))" 
+				method="applause"/>
+			<aop:after-throwing
+				pointcut="execution(* com.hbue.spring.C4.xmlAspect.Performance.perform(..))" 
+				method="demandRefund"/>
+		</aop:aspect> -->
+		<aop:aspect ref="audience">
+ 			<aop:pointcut id="performancePC" expression="execution(* com.hbue.spring.C4.xmlAspect.Performance.perform(..))"/>
+<!--			<aop:before 
+				pointcut-ref="performancePC"
+				method="silenceCellPhones"/>
+			<aop:before 
+				pointcut-ref="performancePC" 
+				method="takeSeats"/>
+			<aop:after-returning
+				pointcut-ref="performancePC" 
+				method="applause"/>
+			<aop:after-throwing
+				pointcut-ref="performancePC" 
+				method="demandRefund"/> -->
+			<aop:around method="watchPerformance" pointcut-ref="performancePC"/>
+		</aop:aspect>
+		<aop:aspect ref="trackCounter">
+			<aop:pointcut id="trackPlayed" expression="execution(* com.hbue.spring.C4.xmlAspect.BlankDisc.playTrack(int)) and args(trackNumber)" />
+			<aop:before method="countTrack" pointcut-ref="trackPlayed"/>
+		</aop:aspect>
+<!-- 		<aop:aspect>
+			<aop:declare-parents 
+				types-matching="com.hbue.spring.C4.xmlAspect.Performance+" 
+				implement-interface="com.hbue.spring.C4.xmlAspect.Encoreable"
+				default-impl="com.hbue.spring.C4.xmlAspect.DefaultEncoreable"/>
+		</aop:aspect> -->
+		<aop:aspect>
+			<aop:declare-parents 
+				types-matching="com.hbue.spring.C4.xmlAspect.Performance+" 
+				implement-interface="com.hbue.spring.C4.xmlAspect.Encoreable"
+				delegate-ref="defaultEncoreable"/>
+		</aop:aspect>
+	</aop:config>
+</beans>
